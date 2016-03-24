@@ -71,15 +71,15 @@ Moving your mouse outside of the circle should remove the highlighting.
 
 // Global Variables
 
-var myRectangle;
-
+var myRectangles = [];
+var layer ;
 // Initialize Leaflet Draw
 
 var drawControl = new L.Control.Draw({
   draw: {
     polyline: false,
     polygon: false,
-    circle: false,
+    circle: true,
     marker: false,
     rectangle: true,
   }
@@ -89,11 +89,16 @@ map.addControl(drawControl);
 
 // Run every time Leaflet draw creates a new layer
 
+var template = function (id, type){return '<div class="shape" id="shape-'+id+'" data-id="'+id+'"><h1>'+id+'</h1><h2>Type:'+type+'</h2></div>' ;};
+
 map.on('draw:created', function (e) {
+    //if(layer){map.removeLayer(layer);}
     var type = e.layerType; // The type of shape
-    var layer = e.layer; // The Leaflet layer for the shape
+    layer = e.layer; // The Leaflet layer for the shape
     var id = L.stamp(layer); // The unique Leaflet ID for the layer
+    myRectangles.push(layer);
 
-
+    $('#shapes').append(template(id, type));
+    map.addLayer(layer);
 
 });
