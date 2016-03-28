@@ -97,8 +97,16 @@ map.on('draw:created', function (e) {
     layer = e.layer; // The Leaflet layer for the shape
     var id = L.stamp(layer); // The unique Leaflet ID for the layer
     myRectangles.push(layer);
-
     $('#shapes').append(template(id, type));
     map.addLayer(layer);
+
+
+    $('[data-id="'+id+'"').on('click',function(){
+      var clickId = $(this).data('id');
+      map.removeLayer(_.findWhere(myRectangles,{_leaflet_id: clickId}));
+      $('[data-id="'+clickId+'"').remove();
+    });
+
+
 
 });
